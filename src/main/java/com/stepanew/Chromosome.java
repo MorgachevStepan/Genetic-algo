@@ -17,6 +17,7 @@ public class Chromosome {
     private List<String> genes; // Список номеров вершин
     private double fitness;     // Значение целевой функции
     private int numberOfColors; // Количество использованных цветов
+    private Map<String, Integer> vertexColors; // Карта соответствия вершины и цвета
 
     /**
      * Конструктор для создания хромосомы с заданными генами.
@@ -59,6 +60,11 @@ public class Chromosome {
     // Добавим геттер для numberOfColors
     public int getNumberOfColors() {
         return numberOfColors;
+    }
+
+    // Добавим геттер для vertexColors
+    public Map<String, Integer> getVertexColors() {
+        return vertexColors;
     }
 
     /**
@@ -133,7 +139,7 @@ public class Chromosome {
      * @param graph граф, который нужно раскрасить
      */
     public void evaluateFitness(Graph<String, DefaultEdge> graph) {
-        Map<String, Integer> vertexColors = new HashMap<>();
+        vertexColors = new HashMap<>();
         int currentColor = 0;
         Set<String> coloredVertices = new HashSet<>();
 
@@ -180,4 +186,5 @@ public class Chromosome {
                 ", numberOfColors=" + numberOfColors +
                 '}';
     }
+
 }

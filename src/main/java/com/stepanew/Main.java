@@ -11,13 +11,10 @@ import java.util.Random;
 
 public class Main {
 
-    private final static String GRAPH_PNG = "src/main/resources/graph.png";
+    private final static String GRAPH_PNG = "src/main/resources/graph";
 
     public static void main(String... args) {
         Graph<String, DefaultEdge> graph = getStringDefaultEdgeGraph();
-
-        System.out.println("Вершины: " + graph.vertexSet());
-        System.out.println("Рёбра: " + graph.edgeSet());
 
         // Создание оценочной матрицы
         EvaluationMatrix evalMatrix = new EvaluationMatrix(graph);
@@ -26,8 +23,8 @@ public class Main {
         List<String> vertices = new ArrayList<>(graph.vertexSet());
         List<Chromosome> population = new ArrayList<>();
 
-        int populationSize = 50;
-        int generations = 100;
+        int populationSize = 100;
+        int generations = 500;
 
         for (int i = 0; i < populationSize; i++) {
             Chromosome chromosome = Chromosome.createRandomChromosome(vertices);
@@ -37,20 +34,22 @@ public class Main {
 
         // Генетический алгоритм
         for (int generation = 0; generation < generations; generation++) {
-            // Селекция (например, турнирная)
+            // Селекция
             population.sort(Comparator.comparingDouble(Chromosome::getFitness));
 
             List<Chromosome> newPopulation = new ArrayList<>();
 
+            Random rand = new Random();
+
             // Кроссинговер и мутация
             while (newPopulation.size() < populationSize) {
-                Chromosome parent1 = population.get(new Random().nextInt(populationSize / 2));
-                Chromosome parent2 = population.get(new Random().nextInt(populationSize / 2));
+                Chromosome parent1 = population.get(rand.nextInt(populationSize / 2));
+                Chromosome parent2 = population.get(rand.nextInt(populationSize / 2));
 
                 Chromosome offspring = Chromosome.crossover(parent1, parent2, evalMatrix);
 
-                // Мутация с определенной вероятностью
-                if (new Random().nextDouble() < 0.1) {
+                // Мутация с вероятностью 5%
+                if (rand.nextDouble() < 0.05) {
                     offspring.mutate();
                 }
 
@@ -60,12 +59,15 @@ public class Main {
 
             population = newPopulation;
 
-            // Выводим лучшую хромосому каждого поколения
-            Chromosome bestChromosome = population.stream()
-                    .min(Comparator.comparingDouble(Chromosome::getFitness))
-                    .orElse(null);
+            // Выводим лучшую хромосому каждого 50-го поколения
+            if (generation % 50 == 0) {
+                Chromosome bestChromosome = population.stream()
+                        .min(Comparator.comparingDouble(Chromosome::getFitness))
+                        .orElse(null);
 
-            System.out.println("Поколение " + generation + ": Лучшая приспособленность = " + bestChromosome.getFitness());
+                System.out.println("Поколение " + generation + ": Лучшая приспособленность = " + bestChromosome.getFitness()
+                        + ", Количество цветов = " + bestChromosome.getNumberOfColors());
+            }
         }
 
         // Выводим результат
@@ -74,8 +76,11 @@ public class Main {
                 .orElse(null);
 
         System.out.println("Лучшее решение: " + bestChromosome);
-
         System.out.println("Количество использованных цветов: " + bestChromosome.getNumberOfColors());
+
+        // Визуализация графа с раскраской
+        Render render = new Render(GRAPH_PNG);
+        render.renderGraph(graph, bestChromosome.getVertexColors(), "_after");
     }
 
     private static Graph<String, DefaultEdge> getStringDefaultEdgeGraph() {
@@ -87,23 +92,19 @@ public class Main {
             g.addVertex("B");
             g.addVertex("C");
             g.addVertex("D");
-            g.addVertex("E");
-            g.addVertex("F");
-            // Добавьте больше вершин и рёбер по необходимости
+
             g.addEdge("A", "B");
             g.addEdge("A", "C");
-            g.addEdge("B", "C");
+            g.addEdge("A", "D");
             g.addEdge("B", "D");
-            g.addEdge("C", "E");
-            g.addEdge("D", "E");
-            g.addEdge("E", "F");
-            g.addEdge("D", "F");
+            g.addEdge("C", "D");
         };
 
         builder.buildGraph(graph);
-        render.renderGraph(graph);
+        render.renderGraph(graph, "_before");
         return graph;
     }
+
 
 }
 
