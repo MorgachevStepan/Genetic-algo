@@ -3,9 +3,13 @@ package com.stepanew;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EvaluationMatrix {
 
     private final int[][] matrix;
+    private final Map<String, Integer> vertexIndexMap;
 
     /**
      * Конструктор для вычисления оценочной матрицы.
@@ -15,6 +19,7 @@ public class EvaluationMatrix {
     public EvaluationMatrix(Graph<String, DefaultEdge> graph) {
         int size = graph.vertexSet().size();
         matrix = new int[size][size];
+        vertexIndexMap = new HashMap<>();
         calculateMatrix(graph);
     }
 
@@ -27,14 +32,21 @@ public class EvaluationMatrix {
         String[] vertices = graph.vertexSet().toArray(new String[0]);
         int n = vertices.length;
 
+        // Создаем отображение идентификаторов вершин в их индексы
         for (int i = 0; i < n; i++) {
+            vertexIndexMap.put(vertices[i], i);
+        }
+
+        for (int i = 0; i < n; i++) {
+            String vertexI = vertices[i];
             for (int j = 0; j < n; j++) {
+                String vertexJ = vertices[j];
                 if (i == j) {
                     matrix[i][j] = 0;
                 } else {
-                    int stepI = graph.edgesOf(vertices[i]).size(); // Локальная степень вершины i
-                    int stepJ = graph.edgesOf(vertices[j]).size(); // Локальная степень вершины j
-                    int sv = graph.containsEdge(vertices[i], vertices[j]) ? 0 : (int) (0.3 * n);
+                    int stepI = graph.edgesOf(vertexI).size(); // Локальная степень вершины i
+                    int stepJ = graph.edgesOf(vertexJ).size(); // Локальная степень вершины j
+                    int sv = graph.containsEdge(vertexI, vertexJ) || graph.containsEdge(vertexJ, vertexI) ? 0 : (int) (0.3 * n);
 
                     matrix[i][j] = stepI + stepJ + sv;
                 }
@@ -43,7 +55,7 @@ public class EvaluationMatrix {
     }
 
     /**
-     * Получить значение оценочной матрицы для двух вершин.
+     * Получить значение оценочной матрицы для двух вершин по их индексам.
      *
      * @param i индекс первой вершины
      * @param j индекс второй вершины
@@ -51,6 +63,24 @@ public class EvaluationMatrix {
      */
     public int getValue(int i, int j) {
         return matrix[i][j];
+    }
+
+    /**
+     * Получить значение оценочной матрицы для двух вершин по их идентификаторам.
+     *
+     * @param vertex1 идентификатор первой вершины
+     * @param vertex2 идентификатор второй вершины
+     * @return значение оценочной матрицы для двух вершин
+     */
+    public int getValue(String vertex1, String vertex2) {
+        Integer index1 = vertexIndexMap.get(vertex1);
+        Integer index2 = vertexIndexMap.get(vertex2);
+
+        if (index1 == null || index2 == null) {
+            throw new IllegalArgumentException("Invalid vertex identifier");
+        }
+
+        return matrix[index1][index2];
     }
 
     /**
