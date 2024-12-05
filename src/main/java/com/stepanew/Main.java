@@ -25,6 +25,10 @@ public class Main {
 
         System.out.println("Вершины: " + graph.vertexSet());
         System.out.println("Рёбра: " + graph.edgeSet());
+
+        EvaluationMatrix evaluationMatrix = new EvaluationMatrix(graph);
+        System.out.println("Оценочная матрица:");
+        evaluationMatrix.printMatrix();
     }
 
 }
