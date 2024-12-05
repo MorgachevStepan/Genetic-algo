@@ -2,20 +2,26 @@ package com.stepanew;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Main {
 
     private final static String GRAPH_PNG = "src/main/resources/graph";
+    private final static String GRAPH_YAML = "graph.yaml";
 
     public static void main(String... args) {
-        Graph<String, DefaultEdge> graph = getStringDefaultEdgeGraph();
+        // Загружаем граф из YAML-файла
+        GraphLoader graphLoader = new GraphLoader(GRAPH_YAML);
+        Graph<String, DefaultEdge> graph = graphLoader.loadGraph();
 
+        // Создаём объект Render
+        Render render = new Render(GRAPH_PNG);
+
+        // Визуализируем исходный граф
+        render.renderGraph(graph, "_before");
+
+        // Далее ваш код генетического алгоритма
         // Создание оценочной матрицы
         EvaluationMatrix evalMatrix = new EvaluationMatrix(graph);
 
@@ -79,32 +85,8 @@ public class Main {
         System.out.println("Количество использованных цветов: " + bestChromosome.getNumberOfColors());
 
         // Визуализация графа с раскраской
-        Render render = new Render(GRAPH_PNG);
         render.renderGraph(graph, bestChromosome.getVertexColors(), "_after");
     }
-
-    private static Graph<String, DefaultEdge> getStringDefaultEdgeGraph() {
-        Graph<String, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
-        Render render = new Render(GRAPH_PNG);
-
-        GraphBuilder<String, DefaultEdge> builder = g -> {
-            g.addVertex("A");
-            g.addVertex("B");
-            g.addVertex("C");
-            g.addVertex("D");
-
-            g.addEdge("A", "B");
-            g.addEdge("A", "C");
-            g.addEdge("A", "D");
-            g.addEdge("B", "D");
-            g.addEdge("C", "D");
-        };
-
-        builder.buildGraph(graph);
-        render.renderGraph(graph, "_before");
-        return graph;
-    }
-
-
 }
+
 

@@ -22,11 +22,10 @@
             <version>1.5.1</version>
         </dependency>
 
-        <!-- Jenetics -->
         <dependency>
-            <groupId>io.jenetics</groupId>
-            <artifactId>jenetics</artifactId>
-            <version>6.3.0</version>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.32</version>
         </dependency>
 
         <!-- (Опционально) JGraphT для работы с графами -->
