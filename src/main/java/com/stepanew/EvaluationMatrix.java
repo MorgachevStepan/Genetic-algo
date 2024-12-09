@@ -32,7 +32,6 @@ public class EvaluationMatrix {
         String[] vertices = graph.vertexSet().toArray(new String[0]);
         int n = vertices.length;
 
-        // Создаем отображение идентификаторов вершин в их индексы
         for (int i = 0; i < n; i++) {
             vertexIndexMap.put(vertices[i], i);
         }
@@ -44,8 +43,8 @@ public class EvaluationMatrix {
                 if (i == j) {
                     matrix[i][j] = 0;
                 } else {
-                    int stepI = graph.edgesOf(vertexI).size(); // Локальная степень вершины i
-                    int stepJ = graph.edgesOf(vertexJ).size(); // Локальная степень вершины j
+                    int stepI = graph.edgesOf(vertexI).size();
+                    int stepJ = graph.edgesOf(vertexJ).size();
                     int sv = graph.containsEdge(vertexI, vertexJ) || graph.containsEdge(vertexJ, vertexI) ? 0 : (int) (0.3 * n);
 
                     matrix[i][j] = stepI + stepJ + sv;

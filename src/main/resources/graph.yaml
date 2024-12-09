@@ -4,8 +4,15 @@ graph:
     - B
     - C
     - D
+    - E
   edges:
     - [A, B]
     - [A, C]
-    - [C, D]
+    - [A, D]
+    - [A, E]
     - [B, C]
+    - [B, D]
+    - [B, E]
+    - [C, D]
+    - [C, E]
+    - [D, E]

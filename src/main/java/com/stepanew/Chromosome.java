@@ -1,5 +1,6 @@
 package com.stepanew;
 
+import lombok.Data;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+@Data
 public class Chromosome {
 
     private List<String> genes; // Список номеров вершин
@@ -39,32 +41,6 @@ public class Chromosome {
         List<String> genes = new ArrayList<>(vertices);
         Collections.shuffle(genes, new Random());
         return new Chromosome(genes);
-    }
-
-    public List<String> getGenes() {
-        return genes;
-    }
-
-    public void setGenes(List<String> genes) {
-        this.genes = genes;
-    }
-
-    public double getFitness() {
-        return fitness;
-    }
-
-    public void setFitness(double fitness) {
-        this.fitness = fitness;
-    }
-
-    // Добавим геттер для numberOfColors
-    public int getNumberOfColors() {
-        return numberOfColors;
-    }
-
-    // Добавим геттер для vertexColors
-    public Map<String, Integer> getVertexColors() {
-        return vertexColors;
     }
 
     /**
@@ -176,15 +152,6 @@ public class Chromosome {
 
         // Целевая функция: отношение количества цветов к количеству вершин
         this.fitness = (double) numberOfColors / genes.size();
-    }
-
-    @Override
-    public String toString() {
-        return "Chromosome{" +
-                "genes=" + genes +
-                ", fitness=" + fitness +
-                ", numberOfColors=" + numberOfColors +
-                '}';
     }
 
 }

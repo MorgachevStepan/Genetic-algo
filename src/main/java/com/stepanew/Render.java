@@ -19,6 +19,11 @@ public class Render {
 
     private final String GRAPH_PNG;
 
+    private final Color[] colors = new Color[] {
+            Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE,
+            Color.CYAN, Color.MAGENTA, Color.PINK, Color.LIGHT_GRAY, Color.GRAY
+    };
+
     public Render(String graphPNG){
         this.GRAPH_PNG = graphPNG;
     }
@@ -63,17 +68,10 @@ public class Render {
         }
     }
 
-    // Метод для получения цвета по индексу
     private Color getColorByIndex(int index) {
-        // Можно определить набор цветов или генерировать их динамически
-        Color[] colors = new Color[] {
-                Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE,
-                Color.CYAN, Color.MAGENTA, Color.PINK, Color.LIGHT_GRAY, Color.GRAY
-        };
         return colors[index % colors.length];
     }
 
-    // Метод для преобразования цвета в шестнадцатеричный код
     private String colorToHex(Color color) {
         return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
     }
