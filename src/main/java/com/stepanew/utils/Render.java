@@ -1,4 +1,4 @@
-package com.stepanew;
+package com.stepanew.utils;
 
 import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxIGraphLayout;

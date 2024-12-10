@@ -5,6 +5,7 @@ graph:
     - C
     - D
     - E
+    - F
   edges:
     - [A, B]
     - [A, C]
@@ -16,3 +17,4 @@ graph:
     - [C, D]
     - [C, E]
     - [D, E]
+    - [D, F]

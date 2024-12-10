@@ -1,4 +1,4 @@
-package com.stepanew;
+package com.stepanew.algorithm;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -9,6 +9,7 @@ import java.util.Map;
 public class EvaluationMatrix {
 
     private final int[][] matrix;
+
     private final Map<String, Integer> vertexIndexMap;
 
     /**

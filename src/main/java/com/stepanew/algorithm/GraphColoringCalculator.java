@@ -1,5 +1,8 @@
-package com.stepanew;
+package com.stepanew.algorithm;
 
+import com.stepanew.utils.AnsiColors;
+import com.stepanew.utils.Config;
+import com.stepanew.utils.Render;
 import lombok.extern.slf4j.Slf4j;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -13,27 +16,36 @@ import java.util.Random;
 @Slf4j
 public class GraphColoringCalculator {
 
-    private final static String GRAPH_PNG = "src/main/resources/graph";
+    private final String GRAPH_PNG;
 
-    private final static String BEFORE_SUFFIX = "_before";
+    private final String BEFORE_SUFFIX;
 
-    private final static String AFTER_SUFFIX = "_after";
+    private final String AFTER_SUFFIX;
 
-    private final static Short POPULATION_SIZE = 100;
+    private final Integer POPULATION_SIZE;
 
-    private final static Short GENERATION_SIZE = 500;
+    private final Integer GENERATION_SIZE;
 
-    private final static Double MUTATION_RATE = 0.05;
+    private final Double MUTATION_RATE;
 
-    private final static Byte RATE_LOG = 50;
+    private final Integer RATE_LOG;
 
     private EvaluationMatrix evaluationMatrix;
 
-    private List<String> vertices;
-
     private List<Chromosome> population;
 
-    private final Render render = new Render(GRAPH_PNG);
+    private final Render render;
+
+    public GraphColoringCalculator(Config config) {
+        this.GRAPH_PNG = config.getGraph().getPng().getPath();
+        this.BEFORE_SUFFIX = config.getGraph().getPng().getSuffix().getBefore();
+        this.AFTER_SUFFIX = config.getGraph().getPng().getSuffix().getAfter();
+        this.POPULATION_SIZE = config.getAlgorithm().getPopulationSize();
+        this.GENERATION_SIZE = config.getAlgorithm().getGenerationSize();
+        this.MUTATION_RATE = config.getAlgorithm().getMutationRate();
+        this.RATE_LOG = config.getAlgorithm().getLogRate();
+        this.render = new Render(GRAPH_PNG);
+    }
 
     public void calculateGraphColoring(final Graph<String, DefaultEdge> graph) {
         preparingPhase(graph);
@@ -51,8 +63,8 @@ public class GraphColoringCalculator {
         renderGraph(graph, bestChromosome.getVertexColors(), AFTER_SUFFIX);
     }
 
-    private void renderGraph(Graph<String, DefaultEdge> graph, Map<String, Integer> vertexColors, String afterSuffix) {
-        render.renderGraph(graph, vertexColors, AFTER_SUFFIX);
+    private void renderGraph(Graph<String, DefaultEdge> graph, Map<String, Integer> vertexColors, String suffix) {
+        render.renderGraph(graph, vertexColors, suffix);
     }
 
     private void renderGraph(Graph<String, DefaultEdge> graph, String suffix) {
@@ -62,7 +74,7 @@ public class GraphColoringCalculator {
     private void preparingPhase(Graph<String, DefaultEdge> graph) {
         renderGraph(graph, BEFORE_SUFFIX);
         evaluationMatrix = new EvaluationMatrix(graph);
-        vertices = new ArrayList<>(graph.vertexSet());
+        List<String> vertices = new ArrayList<>(graph.vertexSet());
         population = new ArrayList<>();
 
         for (int i = 0; i < POPULATION_SIZE; i++) {

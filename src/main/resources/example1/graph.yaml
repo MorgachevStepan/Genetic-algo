@@ -1,0 +1,6 @@
+graph:
+  vertices:
+    - A
+    - B
+  edges:
+    - [A, B]

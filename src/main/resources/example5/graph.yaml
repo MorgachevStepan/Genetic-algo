@@ -1,0 +1,38 @@
+graph:
+  vertices:
+    - A
+    - B
+    - C
+    - D
+    - E
+    - F
+    - G
+    - H
+    - I
+    - J
+    - K
+    - L
+    - M
+    - N
+  edges:
+    - [A, B]
+    - [A, N]
+    - [A, F]
+    - [B, C]
+    - [B, K]
+    - [C, D]
+    - [C, H]
+    - [D, E]
+    - [D, M]
+    - [E, F]
+    - [E, J]
+    - [F, G]
+    - [G, H]
+    - [G, L]
+    - [H, I]
+    - [I, N]
+    - [I, J]
+    - [J, K]
+    - [K, L]
+    - [L, M]
+    - [M, N]

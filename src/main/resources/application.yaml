@@ -1,0 +1,13 @@
+graph:
+  yaml: "example1/graph.yaml"
+  png:
+    path: "docs/example1/graph"
+    suffix:
+      before: "_before"
+      after: "_after"
+
+algorithm:
+  populationSize: 100
+  generationSize: 500
+  mutationRate: 0.05
+  logRate: 50

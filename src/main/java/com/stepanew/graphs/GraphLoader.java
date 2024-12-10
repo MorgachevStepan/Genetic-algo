@@ -1,4 +1,4 @@
-package com.stepanew;
+package com.stepanew.graphs;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;

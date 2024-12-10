@@ -1,4 +1,4 @@
-package com.stepanew;
+package com.stepanew.algorithm;
 
 import lombok.Data;
 import org.jgrapht.Graph;
